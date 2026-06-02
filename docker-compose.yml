@@ -1,0 +1,95 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: ecommerce_database
+    command: ["postgres", "-c", "TimeZone=${TZ:-America/Sao_Paulo}", "-c", "log_timezone=${TZ:-America/Sao_Paulo}"]
+    env_file:
+      - .env
+    environment:
+      TZ: ${TZ:-America/Sao_Paulo}
+      PGTZ: ${TZ:-America/Sao_Paulo}
+      POSTGRES_DB: ${POSTGRES_DB:-ecommerce}
+      POSTGRES_USER: ${POSTGRES_USER:-ecommerce_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ecommerce_pass}
+      POSTGRES_HOST_AUTH_METHOD: md5
+      POSTGRES_INITDB_ARGS: "-c password_encryption=md5 -c TimeZone=${TZ:-America/Sao_Paulo} -c log_timezone=${TZ:-America/Sao_Paulo}"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+    networks:
+      - bi-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U ecommerce_user -d ecommerce && test -f /var/lib/postgresql/data/.restore-complete"]
+      start_period: 30m
+      interval: 10s
+      timeout: 5s
+      retries: 180
+
+  redis:
+    image: redis:7-alpine
+    container_name: mcp_bi_redis
+    environment:
+      TZ: ${TZ:-America/Sao_Paulo}
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bi-network
+
+  mcp-server:
+    build: ./mcp-server
+    container_name: mcp_bi_server
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      TZ: ${TZ:-America/Sao_Paulo}
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://ecommerce_user:ecommerce_pass@postgres:5432/ecommerce}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      MCP_HTTP_HOST: ${MCP_HTTP_HOST:-0.0.0.0}
+      MCP_HTTP_PORT: ${MCP_HTTP_PORT:-8000}
+    networks:
+      - bi-network
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('127.0.0.1', 8000), timeout=2).close()"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  mcp-client:
+    build: ./mcp-client
+    container_name: mcp_bi_client
+    profiles:
+      - client
+    depends_on:
+      mcp-server:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      TZ: ${TZ:-America/Sao_Paulo}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      MCP_SERVER_URL: http://mcp-server:8000/mcp
+    networks:
+      - bi-network
+    stdin_open: true
+    tty: true
+
+networks:
+  bi-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

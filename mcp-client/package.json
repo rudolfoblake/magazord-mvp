@@ -1,0 +1,25 @@
+{
+  "name": "mcp-ecommerce-client",
+  "version": "1.0.0",
+  "description": "MCP Client for Ecommerce BI",
+  "type": "module",
+  "author": "Rudolfo Blake <rudolfoblake@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node src/cli.ts",
+    "build": "tsc",
+    "start": "node dist/cli.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@modelcontextprotocol/sdk": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "inquirer": "^9.2.12"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.11.24",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

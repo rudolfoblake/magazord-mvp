@@ -1,0 +1,25 @@
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[project]
+name = "mcp-ecommerce-server"
+version = "0.1.0"
+description = "MCP Server for Ecommerce BI"
+license = "MIT"
+authors = [
+    { name = "Rudolfo Blake", email = "rudolfoblake@gmail.com" }
+]
+dependencies = [
+    "mcp",
+    "sqlalchemy",
+    "psycopg[binary]",
+    "pydantic",
+    "pydantic-settings",
+    "python-dotenv",
+    "redis"
+]
+requires-python = ">=3.12"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
