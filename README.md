@@ -547,6 +547,7 @@ O projeto possui um plano de evolução detalhado para cenários de alta escala 
 ### Curto Prazo (Q3 2026)
 - **Suporte Multi-idioma:** Otimização dos prompts do sistema para suporte nativo a análises em Inglês e Espanhol.
 - **Exportação de Relatórios:** Implementação de ferramentas para geração de PDFs e planilhas formatadas a partir dos insights da IA.
+- **Refatoração para ORM:** Migração das queries SQL puras para modelos declarativos do SQLAlchemy, aumentando a segurança de tipos e facilitando a manutenção.
 - **Observabilidade Avançada:** Implementação de correlação completa de requisições (`request_id` e `correlation_id`) para rastreamento end-to-end.
 - **Expansão de Testes:** Ampliação da cobertura de testes para incluir cenários de carga e falhas de integração.
 

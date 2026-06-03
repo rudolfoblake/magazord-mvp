@@ -84,6 +84,16 @@ Atualmente o sistema opera majoritariamente em Português. Uma evolução planej
 
 Implementação de ferramentas (MCP tools) especializadas na geração de arquivos formatados (PDF, XLSX) a partir dos insights gerados. Isso permitiria que o usuário solicitasse: "Gere um PDF com a análise de GMV do último mês" e recebesse o arquivo pronto para compartilhamento.
 
+## 1.6. Implementação de Modelos Declarativos (ORM)
+
+Atualmente, o acesso aos dados é feito via SQL puro (SQLAlchemy Core) nos repositórios. Como evolução de curto prazo, recomenda-se a criação de modelos declarativos (`Base` models) para as tabelas `orders`, `products` e `order_item`.
+
+Benefícios:
+* Eliminação de strings SQL espalhadas pelo código.
+* Uso de relacionamentos nativos do SQLAlchemy.
+* Validação de tipos em tempo de compilação/desenvolvimento.
+* Facilidade para futuras migrações de banco de dados.
+
 ---
 
 # 2. Melhorias para Crescimento de Volume
