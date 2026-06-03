@@ -78,19 +78,28 @@ Responsável por:
 **Pergunta:** "Quais categorias de produtos tiveram a maior taxa de cancelamento neste trimestre, e comparando com o trimestre anterior, essa taxa piorou ou melhorou? Me diz também os top 3 produtos responsáveis por isso em cada categoria."
 
 **Resposta:**
-O sistema orquestra múltiplas chamadas às ferramentas MCP (`get_cancellation_analysis`) para consolidar o seguinte insight:
+O sistema orquestra múltiplas chamadas às ferramentas MCP (`get_cancellation_analysis`) para consolidar o seguinte insight executivo:
 
-**1. Categorias com Maior Taxa de Cancelamento (Trimestre Atual)**
-*   **1º LUGAR: BRINQUEDOS** (Taxa: 25,84%)
-    *   *Top Produto:* Boneca Baby Alive Chora de Verdade Hasbro (462 pedidos cancelados)
-*   **2º LUGAR: LIVROS** (Taxa: 25,50%)
-    *   *Top Produto:* Design Patterns - Gang of Four (440 pedidos cancelados)
-*   **3º LUGAR: CALÇADOS** (Taxa: 25,24%)
-    *   *Top Produto:* Bota Coturno Feminina Couro Sintético (470 pedidos cancelados)
+**1. PERÍODO ANALISADO**
+*   **Trimestre Atual:** 01/04/2026 a 02/06/2026 (Parcial)
+*   **Trimestre Anterior:** 01/01/2026 a 31/03/2026 (Fechado)
 
-**2. Comparação Evolutiva**
-*   **Calçados (Melhorou):** Redução de 0,56 p.p. na taxa de cancelamento.
-*   **Novos Ofensores (Piorou):** Brinquedos e Livros assumiram a liderança, superando as taxas máximas do trimestre anterior.
+**2. MÉTRICAS DO TRIMESTRE ATUAL**
+| Categoria | Taxa de Cancelamento | Top Produto Ofensor |
+| :--- | :---: | :--- |
+| **Brinquedos** | **25,84%** | Boneca Baby Alive Chora de Verdade Hasbro |
+| **Livros** | **25,50%** | Design Patterns - Gang of Four |
+| **Calçados** | **25,24%** | Bota Coturno Feminina Couro Sintético |
+
+**3. INSIGHTS E HIPÓTESES**
+*   **Comparação Evolutiva:** A categoria de **Calçados** apresentou melhora (queda de 0,56 p.p.), mas **Brinquedos** e **Livros** assumiram a liderança com taxas alarmantes.
+*   **Hipótese de Logística:** O alto cancelamento em Brinquedos (produtos de presente) pode indicar falhas no SLA de entrega.
+*   **Hipótese de Grade:** A recorrência de calçados específicos (IDs 87 e 88) sugere problemas na tabela de medidas (fôrma incorreta).
+
+**4. RECOMENDAÇÕES ESTRATÉGICAS**
+*   Auditoria urgente da ficha técnica dos calçados líderes de cancelamento.
+*   Sincronização de estoque físico vs virtual para categorias de Livros e Brinquedos.
+*   Análise de performance das transportadoras para pedidos de Brinquedos.
 
 Todas as métricas são obtidas através das ferramentas MCP e calculadas no servidor.
 

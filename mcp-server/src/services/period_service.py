@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
-from typing import Tuple
+from typing import Tuple, Optional
 import calendar
+import re
 
 class PeriodService:
     @staticmethod
@@ -82,13 +83,37 @@ class PeriodService:
             end = datetime(today.year - 1, 12, 31, 23, 59, 59)
             label = "last_year"
         elif period_str == "last_12_months":
-            # 12 meses calendário completos anteriores + mês atual até agora
             first_day_current_month = today.replace(day=1)
             start = (first_day_current_month - timedelta(days=365)).replace(day=1)
             end = now_end_of_day
             label = "last_12_months"
         else:
-            raise ValueError(f"Invalid period: {period_str}")
+            # Custom formats
+            # 1. YYYY-MM-DD
+            if re.match(r'^\d{4}-\d{2}-\d{2}$', period_str):
+                try:
+                    dt = datetime.strptime(period_str, '%Y-%m-%d')
+                    return PeriodService._start_of_day(dt), PeriodService._end_of_day(dt), period_str
+                except ValueError:
+                    pass
+            
+            # 2. YYYY-MM
+            if re.match(r'^\d{4}-\d{2}$', period_str):
+                try:
+                    year, month = map(int, period_str.split('-'))
+                    if 1 <= month <= 12:
+                        return PeriodService._month_start(year, month), PeriodService._month_end(year, month), period_str
+                except ValueError:
+                    pass
+
+            # 3. YYYY-Q#
+            match = re.match(r'^(\d{4})-Q([1-4])$', period_str, re.IGNORECASE)
+            if match:
+                year = int(match.group(1))
+                quarter = int(match.group(2))
+                return PeriodService._quarter_start(year, quarter), PeriodService._quarter_end(year, quarter), period_str
+
+            raise ValueError(f"Invalid period: {period_str}. Supported formats: today, last_month, etc. OR YYYY-MM, YYYY-MM-DD, YYYY-Q1")
             
         return start, end, label
 
@@ -157,6 +182,31 @@ class PeriodService:
             comp_end = datetime(start.year - 1, 12, 31, 23, 59, 59)
             label = "year_before_last"
             return comp_start, comp_end, label
+
+        # Handle custom formats for comparison
+        # 1. YYYY-MM -> previous month
+        if re.match(r'^\d{4}-\d{2}$', period_str):
+            year, month = map(int, period_str.split('-'))
+            prev_year, prev_month = PeriodService._shift_month(year, month, -1)
+            return PeriodService._month_start(prev_year, prev_month), PeriodService._month_end(prev_year, prev_month), f"month_before_{period_str}"
+
+        # 2. YYYY-Q# -> previous quarter
+        match = re.match(r'^(\d{4})-Q([1-4])$', period_str, re.IGNORECASE)
+        if match:
+            year = int(match.group(1))
+            quarter = int(match.group(2))
+            prev_quarter = quarter - 1
+            prev_year = year
+            if prev_quarter == 0:
+                prev_quarter = 4
+                prev_year -= 1
+            return PeriodService._quarter_start(prev_year, prev_quarter), PeriodService._quarter_end(prev_year, prev_quarter), f"quarter_before_{period_str}"
+
+        # 3. YYYY-MM-DD -> previous year same day
+        if re.match(r'^\d{4}-\d{2}-\d{2}$', period_str):
+            comp_start = start - timedelta(days=365)
+            comp_end = end - timedelta(days=365)
+            return comp_start, comp_end, f"year_over_year_{period_str}"
 
         comp_start = start - duration - timedelta(seconds=1)
         comp_end = start - timedelta(seconds=1)

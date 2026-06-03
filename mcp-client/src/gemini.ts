@@ -54,12 +54,14 @@ export class GeminiManager {
     }
 
     // 3. Send message to Gemini
-    let result = await this.chatSession.sendMessage(userMessage);
+    let result = await this.chatSession!.sendMessage(userMessage);
     let response = result.response;
 
     // 4. Handle tool calls (loop until no more calls)
     while (response.functionCalls()?.length) {
       const toolCalls = response.functionCalls();
+      if (!toolCalls) break;
+
       const toolResults = [];
 
       for (const call of toolCalls) {
@@ -84,7 +86,7 @@ export class GeminiManager {
       }
 
       // Send tool results back to Gemini
-      result = await this.chatSession.sendMessage(toolResults);
+      result = await this.chatSession!.sendMessage(toolResults);
       response = result.response;
     }
 
