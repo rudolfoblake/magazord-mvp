@@ -49,6 +49,7 @@ Responsável por:
 * Interpretação das perguntas do usuário
 * Seleção e execução das ferramentas MCP
 * Tratamento de falhas através de Circuit Breaker
+* Mecanismo de **Retry automático** (até 3 tentativas) para chamadas à API do Gemini
 
 ---
 

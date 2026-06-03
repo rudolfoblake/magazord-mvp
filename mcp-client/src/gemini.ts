@@ -54,8 +54,27 @@ export class GeminiManager {
     }
 
     // 3. Send message to Gemini
-    let result = await this.chatSession!.sendMessage(userMessage);
-    let response = result.response;
+    let response: any;
+    let attempts = 0;
+    const maxAttempts = 3;
+
+    while (attempts < maxAttempts) {
+      try {
+        let result = await this.chatSession!.sendMessage(userMessage);
+        response = result.response;
+        break;
+      } catch (error: any) {
+        attempts++;
+        console.error(`\n[Gemini] Erro na chamada (tentativa ${attempts}/${maxAttempts}): ${error.message}`);
+        
+        if (attempts >= maxAttempts) {
+          return "Desculpe, o serviço de inteligência artificial (Gemini) está temporariamente indisponível após várias tentativas. Por favor, tente novamente em instantes.";
+        }
+        
+        // Aguarda 1 segundo antes de tentar novamente
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
 
     // 4. Handle tool calls (loop until no more calls)
     while (response.functionCalls()?.length) {
@@ -85,9 +104,23 @@ export class GeminiManager {
         }
       }
 
-      // Send tool results back to Gemini
-      result = await this.chatSession!.sendMessage(toolResults);
-      response = result.response;
+      // Send tool results back to Gemini with retry
+      let toolAttempts = 0;
+      while (toolAttempts < maxAttempts) {
+        try {
+          const result = await this.chatSession!.sendMessage(toolResults);
+          response = result.response;
+          break;
+        } catch (error: any) {
+          toolAttempts++;
+          console.error(`\n[Gemini] Erro ao enviar resultados (tentativa ${toolAttempts}/${maxAttempts}): ${error.message}`);
+          
+          if (toolAttempts >= maxAttempts) {
+            return "Desculpe, o serviço de inteligência artificial (Gemini) falhou ao processar os dados das ferramentas após várias tentativas.";
+          }
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      }
     }
 
     return response.text();
