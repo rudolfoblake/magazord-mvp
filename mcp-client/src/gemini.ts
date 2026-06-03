@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, Tool } from "@google/generative-ai";
+import { GoogleGenerativeAI, Tool, ChatSession } from "@google/generative-ai";
 import { MCPManager } from "./mcp.js";
 import { SYSTEM_PROMPT } from "./prompts.js";
 import dotenv from "dotenv";
@@ -9,6 +9,7 @@ export class GeminiManager {
   private genAI: GoogleGenerativeAI;
   private model: any;
   private mcpManager: MCPManager;
+  private chatSession: ChatSession | null = null;
 
   constructor(mcpManager: MCPManager) {
     const apiKey = process.env.GEMINI_API_KEY;
@@ -46,12 +47,14 @@ export class GeminiManager {
       },
     ];
 
-    const chat = this.model.startChat({
-      tools: geminiTools,
-    });
+    if (!this.chatSession) {
+      this.chatSession = this.model.startChat({
+        tools: geminiTools,
+      });
+    }
 
     // 3. Send message to Gemini
-    let result = await chat.sendMessage(userMessage);
+    let result = await this.chatSession.sendMessage(userMessage);
     let response = result.response;
 
     // 4. Handle tool calls (loop until no more calls)
@@ -81,7 +84,7 @@ export class GeminiManager {
       }
 
       // Send tool results back to Gemini
-      result = await chat.sendMessage(toolResults);
+      result = await this.chatSession.sendMessage(toolResults);
       response = result.response;
     }
 

@@ -4,8 +4,8 @@ from src.services.cache_service import mcp_cache
 
 def register_analytics_tools(mcp, tool_telemetry):
     @mcp.tool()
-    @mcp_cache(ttl=300)
     @tool_telemetry
+    @mcp_cache(ttl=300)
     def get_top_products(period: str, limit: int = 5) -> dict:
         """
         Returns the top selling products for a given period.
@@ -17,8 +17,8 @@ def register_analytics_tools(mcp, tool_telemetry):
             return service.get_top_products(period, limit)
 
     @mcp.tool()
-    @mcp_cache(ttl=300)
     @tool_telemetry
+    @mcp_cache(ttl=300)
     def get_cancellation_analysis(period: str, limit: int = 3) -> dict:
         """
         Analyzes cancelled orders, including top categories and products with highest cancellation rates.
@@ -30,8 +30,8 @@ def register_analytics_tools(mcp, tool_telemetry):
             return service.get_cancellation_analysis(period, limit)
 
     @mcp.tool()
-    @mcp_cache(ttl=300)
     @tool_telemetry
+    @mcp_cache(ttl=300)
     def get_business_overview(period: str) -> dict:
         """
         Returns a high-level executive summary of the business for a given period.
@@ -41,8 +41,8 @@ def register_analytics_tools(mcp, tool_telemetry):
             return service.get_business_overview(period)
 
     @mcp.tool()
-    @mcp_cache(ttl=300)
     @tool_telemetry
+    @mcp_cache(ttl=300)
     def get_stock_health(low_stock_threshold: int = 10, limit: int = 10) -> dict:
         """
         Returns stock health metrics if the database contains stock/inventory data on products table.

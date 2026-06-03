@@ -59,16 +59,21 @@ def mcp_cache(ttl: int = 3600):
             cached_result = cache_service.get(cache_key)
             if cached_result:
                 logger.info(f"Cache HIT for key: {cache_key}")
+                # Add flag for telemetry without polluting Redis (fresh object from get)
                 if isinstance(cached_result, dict):
                     cached_result["_cache_hit"] = True
                 return cached_result
 
-            # Execute function and store in cache
-            logger.info(f"Cache MISS for key: {cache_key}")
+            # Execute function
             result = f(*args, **kwargs)
+            
+            # Store in cache FIRST (without the telemetry flag)
             cache_service.set(cache_key, result, ttl=ttl)
+            
+            # Add flag for telemetry (if it's a dict)
             if isinstance(result, dict):
                 result["_cache_hit"] = False
+                
             return result
         return wrapper
     return decorator

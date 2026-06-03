@@ -66,15 +66,31 @@ Responsável por:
 
 ## Exemplo de Uso
 
-Pergunta:
+### Cenário 1: Indicadores Financeiros Rápidos
+**Pergunta:** "Qual foi o GMV do último mês e qual a variação em relação ao mês anterior?"
 
-> Qual foi o GMV do último mês e qual a variação em relação ao mês anterior?
+**Resposta:**
+*   GMV Maio/2026: R$ 32.169.897,58
+*   GMV Abril/2026: R$ 37.251.930,66
+*   Variação: -13,64%
 
-Resposta:
+### Cenário 2: Análise Analítica Complexa
+**Pergunta:** "Quais categorias de produtos tiveram a maior taxa de cancelamento neste trimestre, e comparando com o trimestre anterior, essa taxa piorou ou melhorou? Me diz também os top 3 produtos responsáveis por isso em cada categoria."
 
-* GMV Maio/2026: R$ 32.169.897,58
-* GMV Abril/2026: R$ 37.251.930,66
-* Variação: -13,64%
+**Resposta:**
+O sistema orquestra múltiplas chamadas às ferramentas MCP (`get_cancellation_analysis`) para consolidar o seguinte insight:
+
+**1. Categorias com Maior Taxa de Cancelamento (Trimestre Atual)**
+*   **1º LUGAR: BRINQUEDOS** (Taxa: 25,84%)
+    *   *Top Produto:* Boneca Baby Alive Chora de Verdade Hasbro (462 pedidos cancelados)
+*   **2º LUGAR: LIVROS** (Taxa: 25,50%)
+    *   *Top Produto:* Design Patterns - Gang of Four (440 pedidos cancelados)
+*   **3º LUGAR: CALÇADOS** (Taxa: 25,24%)
+    *   *Top Produto:* Bota Coturno Feminina Couro Sintético (470 pedidos cancelados)
+
+**2. Comparação Evolutiva**
+*   **Calçados (Melhorou):** Redução de 0,56 p.p. na taxa de cancelamento.
+*   **Novos Ofensores (Piorou):** Brinquedos e Livros assumiram a liderança, superando as taxas máximas do trimestre anterior.
 
 Todas as métricas são obtidas através das ferramentas MCP e calculadas no servidor.
 

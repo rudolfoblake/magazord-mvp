@@ -4,8 +4,8 @@ from src.services.cache_service import mcp_cache
 
 def register_sales_tools(mcp, tool_telemetry):
     @mcp.tool()
-    @mcp_cache(ttl=300)
     @tool_telemetry
+    @mcp_cache(ttl=300)
     def get_gmv(period: str) -> dict:
         """
         Returns the Gross Merchandise Volume (GMV) for a given period.
@@ -28,8 +28,8 @@ def register_sales_tools(mcp, tool_telemetry):
             return service.get_gmv_comparison(current_period, comparison_period)
 
     @mcp.tool()
-    @mcp_cache(ttl=300)
     @tool_telemetry
+    @mcp_cache(ttl=300)
     def get_average_ticket(period: str) -> dict:
         """
         Returns the average ticket value for a given period.
@@ -39,8 +39,8 @@ def register_sales_tools(mcp, tool_telemetry):
             return service.get_average_ticket(period)
 
     @mcp.tool()
-    @mcp_cache(ttl=300)
     @tool_telemetry
+    @mcp_cache(ttl=300)
     def get_average_ticket_yoy() -> dict:
         """
         Compares the average ticket value of the current year with the previous year (Year-over-Year).
