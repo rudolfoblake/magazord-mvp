@@ -18,8 +18,8 @@ Este projeto foi desenvolvido como resposta ao desafio técnico da Magazord.
 
 ## Documentação Complementar
 
-* **instrucoes_desafio.md**: requisitos e escopo do desafio.
-* **relatorio_de_melhorias.md**: melhorias futuras, observabilidade, escalabilidade e evolução da arquitetura.
+* [instrucoes_desafio.md](instrucoes_desafio.md): requisitos e escopo do desafio.
+* [relatorio_de_melhorias.md](relatorio_de_melhorias.md): melhorias futuras, observabilidade, escalabilidade e evolução da arquitetura.
 
 ---
 
@@ -384,7 +384,7 @@ docker compose exec mcp-server pytest
 
 ### Ferramentas MCP Especializadas
 
-Em vez de permitir que a LLM gere consultas SQL diretamente, o sistema expõe ferramentas específicas para cada tipo de análise, centralizadas em [sales_tools.py](mcp-server/src/tools/sales_tools.py) e [analytics_tools.py](mcp-server/src/tools/analytics_tools.py).
+Em vez de permitir que o modelo gere consultas SQL diretamente, o sistema expõe ferramentas específicas para cada tipo de análise, centralizadas em [sales_tools.py](mcp-server/src/tools/sales_tools.py) e [analytics_tools.py](mcp-server/src/tools/analytics_tools.py).
 
 Exemplos:
 
@@ -434,7 +434,7 @@ O Redis é utilizado para armazenar resultados de consultas recorrentes e reduzi
 
 ## Engenharia de Software
 
-O projeto utiliza decorators para desacoplar funcionalidades de infraestrutura da lógica de negócio, conforme implementado em [server.py](mcp-server/src/server.py).
+O projeto utiliza decoradores para desacoplar funcionalidades de infraestrutura da lógica de negócio, conforme implementado em [server.py](mcp-server/src/server.py).
 
 ### @mcp_cache
 
