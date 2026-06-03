@@ -76,6 +76,14 @@ Objetivo:
 
 Melhor equilíbrio entre performance e atualização dos dados.
 
+## 1.4. Suporte Multi-idioma
+
+Atualmente o sistema opera majoritariamente em Português. Uma evolução planejada é a otimização dos prompts e das ferramentas para suporte nativo a Inglês e Espanhol, permitindo que a IA responda e analise dados em múltiplos idiomas de forma fluida.
+
+## 1.5. Exportação de Relatórios
+
+Implementação de ferramentas (MCP tools) especializadas na geração de arquivos formatados (PDF, XLSX) a partir dos insights gerados. Isso permitiria que o usuário solicitasse: "Gere um PDF com a análise de GMV do último mês" e recebesse o arquivo pronto para compartilhamento.
+
 ---
 
 # 2. Melhorias para Crescimento de Volume
@@ -348,7 +356,11 @@ Benefícios:
 
 ---
 
-## 6.5. Serviço Independente de IA
+## 6.5. Análise Preditiva e Forecasting
+
+Integração de modelos de Machine Learning (ou ferramentas estatísticas no servidor) para realizar previsões de demanda e faturamento. O Copilot passaria a responder não apenas "o que aconteceu", mas "o que provavelmente acontecerá no próximo trimestre", identificando tendências e sugerindo ações preventivas.
+
+## 6.6. Serviço Independente de IA
 
 Em um cenário de crescimento, a camada de IA poderia ser extraída para um microserviço independente.
 

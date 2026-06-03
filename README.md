@@ -382,20 +382,20 @@ docker compose exec mcp-server pytest
 
 ## Decisões de Arquitetura
 
-### Ferramentas MCP Especializadas
+### Justificativa Tecnológica
 
-Em vez de permitir que o modelo gere consultas SQL diretamente, o sistema expõe ferramentas específicas para cada tipo de análise, centralizadas em [sales_tools.py](mcp-server/src/tools/sales_tools.py) e [analytics_tools.py](mcp-server/src/tools/analytics_tools.py).
+*   **MCP Server (Python + FastMCP)**: Escolhido pela maturidade do ecossistema de análise de dados (Pandas, SQLAlchemy) e pela facilidade de integração com o protocolo MCP via biblioteca FastMCP. Python permite expressar regras de negócio analíticas de forma concisa e eficiente.
+*   **MCP Client (Node.js + TypeScript)**: Utilizado para garantir uma CLI performática e tipos seguros. A integração com o SDK do Google Generative AI é extremamente estável em ambiente Node, facilitando o tratamento de streams e interações interativas.
+*   **PostgreSQL**: Banco de dados relacional robusto para garantir a integridade dos dados transacionais do e-commerce.
+*   **Redis**: Essencial para cache de indicadores pesados, reduzindo o custo computacional e financeiro (tokens) em perguntas repetitivas.
 
-Exemplos:
+### Design de Ferramentas (MCP)
 
-* GMV
-* Ticket Médio
-* Comparações de períodos
-* Produtos mais vendidos
-* Cancelamentos
-* Indicadores executivos
+A estratégia de design focou em **ferramentas especializadas e granulares** em vez de uma ferramenta única de "execução de SQL".
 
-Essa abordagem reduz riscos de alucinação e mantém as regras de negócio centralizadas.
+*   **Controle de Contexto**: Cada ferramenta retorna apenas o necessário para a resposta (ex: agregados mensais em vez de linhas individuais de pedidos). Isso evita o estouro da janela de tokens da LLM.
+*   **Redução de Alucinações**: Ao receber dados já processados pelo servidor (como variações percentuais e status validados), o modelo não precisa realizar cálculos complexos, apenas interpretar os fatos retornados.
+*   **Granularidade**: Ferramentas como `get_gmv_comparison` e `get_cancellation_analysis` isolam responsabilidades, permitindo que a LLM orquestre múltiplas chamadas se necessário, mas sempre com dados validados.
 
 ### Flexibilidade de Períodos
 
@@ -478,21 +478,6 @@ Informações registradas:
 
 Os logs são enviados para stdout e podem ser consumidos diretamente pelo Docker.
 
----
-
-## Roadmap e Evolução
-
-O projeto possui um plano de evolução detalhado para cenários de alta escala e produção. Os principais pilares de desenvolvimento futuro incluem:
-
-*   **Observabilidade Avançada**: Implementação de tracing distribuído e correlação de requisições (`request_id`, `correlation_id`).
-*   **Alta Performance**: Criação de Materialized Views e suporte a Read Replicas para consultas analíticas pesadas.
-*   **Resiliência**: Expansão do Circuit Breaker e cache em múltiplas camadas.
-*   **Inteligência Artificial**: Arquitetura multiagente e orquestrador de LLMs para suporte a múltiplos provedores (OpenAI, Claude, etc).
-
-Para detalhes técnicos sobre cada uma dessas melhorias, acesse o [Relatório de Melhorias e Evolução da Arquitetura](relatorio_de_melhorias.md).
-
----
-
 ## Uso de Inteligência Artificial
 
 O desenvolvimento do projeto foi conduzido por mim desde a etapa de concepção da solução até a validação final dos resultados.
@@ -556,6 +541,8 @@ Esse processo foi iterativo. Muitas decisões arquiteturais não surgiram pronta
 ---
 
 ## Roadmap de Evolução
+
+O projeto possui um plano de evolução detalhado para cenários de alta escala e produção. Para uma análise técnica completa de cada ponto, acesse o [Relatório de Melhorias e Evolução da Arquitetura](relatorio_de_melhorias.md).
 
 ### Curto Prazo (Q3 2026)
 - **Suporte Multi-idioma:** Otimização dos prompts do sistema para suporte nativo a análises em Inglês e Espanhol.
