@@ -478,6 +478,21 @@ Informações registradas:
 
 Os logs são enviados para stdout e podem ser consumidos diretamente pelo Docker.
 
+---
+
+## Roadmap e Evolução
+
+O projeto possui um plano de evolução detalhado para cenários de alta escala e produção. Os principais pilares de desenvolvimento futuro incluem:
+
+*   **Observabilidade Avançada**: Implementação de tracing distribuído e correlação de requisições (`request_id`, `correlation_id`).
+*   **Alta Performance**: Criação de Materialized Views e suporte a Read Replicas para consultas analíticas pesadas.
+*   **Resiliência**: Expansão do Circuit Breaker e cache em múltiplas camadas.
+*   **Inteligência Artificial**: Arquitetura multiagente e orquestrador de LLMs para suporte a múltiplos provedores (OpenAI, Claude, etc).
+
+Para detalhes técnicos sobre cada uma dessas melhorias, acesse o [Relatório de Melhorias e Evolução da Arquitetura](relatorio_de_melhorias.md).
+
+---
+
 ## Uso de Inteligência Artificial
 
 O desenvolvimento do projeto foi conduzido por mim desde a etapa de concepção da solução até a validação final dos resultados.
