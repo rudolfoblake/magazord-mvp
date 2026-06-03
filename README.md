@@ -147,7 +147,7 @@ docker compose --profile client run --rm mcp-client
 
 ### Ferramentas MCP Especializadas
 
-Em vez de permitir que a LLM gere consultas SQL diretamente, o sistema expõe ferramentas específicas para cada tipo de análise.
+Em vez de permitir que a LLM gere consultas SQL diretamente, o sistema expõe ferramentas específicas para cada tipo de análise, centralizadas em [sales_tools.py](mcp-server/src/tools/sales_tools.py) e [analytics_tools.py](mcp-server/src/tools/analytics_tools.py).
 
 Exemplos:
 
@@ -185,7 +185,7 @@ O Redis é utilizado para armazenar resultados de consultas recorrentes e reduzi
 
 ## Engenharia de Software
 
-O projeto utiliza decorators para desacoplar funcionalidades de infraestrutura da lógica de negócio.
+O projeto utiliza decorators para desacoplar funcionalidades de infraestrutura da lógica de negócio, conforme implementado em [server.py](mcp-server/src/server.py).
 
 ### @mcp_cache
 
@@ -229,20 +229,65 @@ Informações registradas:
 
 Os logs são enviados para stdout e podem ser consumidos diretamente pelo Docker.
 
----
-
 ## Uso de Inteligência Artificial
 
-A IA foi utilizada como ferramenta de apoio durante o desenvolvimento.
+O desenvolvimento do projeto foi conduzido por mim desde a etapa de concepção da solução até a validação final dos resultados.
 
-Foi utilizada para:
+O processo começou com pesquisa e levantamento de boas práticas para entender como atender aos requisitos do desafio utilizando MCP, PostgreSQL, Redis, LLMs e arquitetura modular. Essa etapa envolveu estudo técnico, análise de referências do mercado e validação de alternativas arquiteturais.
 
-* geração inicial de código
-* prototipação de componentes
-* geração de consultas SQL
-* aceleração da documentação
+Durante o desenvolvimento utilizei ChatGPT como apoio para pesquisa, validação de abordagens e discussão de alternativas técnicas.
 
-Toda a arquitetura, regras de negócio, validação dos indicadores, revisão do código e ajustes finais foram realizados manualmente.
+Após a definição inicial da arquitetura, utilizei um agente especializado de desenvolvimento configurado por mim dentro da IDE Trae. Esse agente foi construído a partir de prompts próprios que venho refinando ao longo dos últimos meses para atividades de arquitetura, desenvolvimento, revisão de código e análise técnica.
+
+O agente recebeu diretrizes detalhadas sobre:
+
+* arquitetura do sistema
+* responsabilidades dos componentes
+* padrões de código
+* princípios SOLID
+* separação de responsabilidades
+* observabilidade
+* escalabilidade
+* boas práticas de desenvolvimento
+
+A partir dessa base, a IA auxiliou na geração inicial de código, prototipação de componentes, criação de consultas SQL, estruturação das ferramentas MCP e implementação de partes da solução.
+
+Entretanto, todo o processo ocorreu em um modelo Human-in-the-Loop, onde cada etapa foi revisada, ajustada e validada manualmente.
+
+As principais atividades realizadas manualmente incluíram:
+
+* definição da arquitetura
+* refinamento das regras de negócio
+* revisão e correção de código
+* validação das consultas SQL
+* debugging
+* testes locais
+* validação das métricas financeiras
+* revisão da documentação
+* ajustes de observabilidade e resiliência
+
+Além disso, utilizei outras ferramentas de IA como apoio complementar para revisão técnica e validação cruzada das implementações, incluindo Gemini e Manus.
+
+Todo o sistema foi executado e validado localmente através de Docker Compose. As respostas produzidas pela aplicação foram testadas em múltiplos cenários e comparadas manualmente para verificar consistência dos resultados.
+
+Durante o desenvolvimento foram realizados diversos ciclos de revisão e validação, incluindo conferência dos indicadores retornados pelas ferramentas MCP, comparação de resultados entre execuções e revisão das respostas utilizando diferentes modelos de IA como mecanismo adicional de verificação.
+
+Em resumo, a IA foi utilizada como acelerador de desenvolvimento e revisão técnica, mas todas as decisões finais de arquitetura, regras de negócio, validação dos indicadores e aprovação das implementações permaneceram sob minha responsabilidade.
+
+Outro ponto importante é que o projeto não foi construído de forma linear. A arquitetura evoluiu ao longo do desenvolvimento através de ciclos sucessivos de implementação, testes, revisão e refatoração.
+
+Diversas melhorias surgiram durante esse processo. Inicialmente algumas responsabilidades estavam distribuídas diretamente nas ferramentas MCP, mas conforme a solução amadureceu foram sendo extraídas para componentes reutilizáveis e desacoplados.
+
+Exemplos dessa evolução incluem:
+
+* Introdução de decorators para cache e telemetria.
+* Centralização das regras de negócio de faturamento.
+* Criação de uma camada de observabilidade com logging estruturado.
+* Implementação de Circuit Breaker para aumentar a resiliência da integração com a LLM.
+* Evolução das consultas SQL para modelos mais consistentes e reutilizáveis.
+* Refinamento do design das ferramentas MCP para reduzir acoplamento e melhorar a qualidade do contexto enviado à IA.
+
+Esse processo foi iterativo. Muitas decisões arquiteturais não surgiram prontas no início do projeto, mas foram sendo refinadas conforme novos cenários eram identificados durante os testes, validações de métricas e revisões técnicas.
 
 ---
 

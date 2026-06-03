@@ -16,7 +16,7 @@ Estas melhorias possuem baixo risco de implementação e agregam valor imediato 
 
 ## 1.1. Expansão da Cobertura de Testes
 
-Atualmente o projeto possui testes para componentes principais e regras de negócio críticas.
+Atualmente o projeto possui testes para componentes principais e regras de negócio críticas, localizados em [tests/test_core.py](mcp-server/tests/test_core.py).
 
 Como evolução, recomenda-se ampliar a cobertura para:
 
