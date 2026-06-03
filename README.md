@@ -552,10 +552,12 @@ O projeto possui um plano de evolução detalhado para cenários de alta escala 
 - **Expansão de Testes:** Ampliação da cobertura de testes para incluir cenários de carga e falhas de integração.
 
 ### Médio Prazo (Q4 2026 - Q1 2027)
-- **Análise Preditiva:** Integração de modelos de Machine Learning para previsão de demanda (Forecasting) e detecção de anomalias em tempo real.
-- **Orquestrador de LLM Dedicado:** Migração para uma arquitetura de microserviço dedicada para gestão de múltiplos provedores de IA e segurança avançada.
-- **Arquitetura Multiagente:** Introdução de agentes especializados por domínio (Financeiro, Comercial e Operações) para análises mais profundas.
-- **Escalabilidade de Dados:** Implementação de Read Replicas e particionamento de tabelas históricas para suportar volumes massivos de dados.
+- **Escalabilidade de Dados:** Implementação de Read Replicas e cache multi-camada para suportar volumes massivos de dados.
+- **Interface Web (Front-end):** Evolução da CLI para um dashboard web completo com visualizações gráficas e interativas.
+- **Multi-usuário e RBAC:** Implementação de login seguro (OAuth2/JWT) com perfis de acesso (Diretor, Gerente, Analista).
+- **Orquestrador de LLM Dedicado:** Camada para gestão de múltiplos provedores de IA e segurança avançada.
+- **Análise Preditiva:** Modelos de Forecasting para previsão de demanda e faturamento.
+- **Arquitetura Multiagente:** Agentes especializados por domínio para análises profundas e autônomas.
 
 ---
 
